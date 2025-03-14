@@ -138,7 +138,7 @@
 
 ## <a id="introduction">Введение</a>
 
-В условиях современного бизнеса эффективный контроль товарных запасов является ключевым фактором успешной работы предприятия. Управление инвентаризацией товаров, включая их учёт, перемещение, списание и анализ остатков, требует точности и оперативности, что обуславливает актуальность разработки специализированной базы данных (БД). Такая система должна предоставлять структурированный доступ к информации о товарах, поставщиках, заказах, продажах и складских операциях, обеспечивая прозрачность процессов для менеджеров, кладовщиков и руководства.
+В условиях современного бизнеса эффективный контроль товарных запасов является ключевым фактором успешной работы предприятия. Управление инвентаризацией товаров, включая их учёт, перемещение, списание и анализ остатков, требует точности и оперативности, что обуславливает актуальность разработки специализированной базы данных (БД). Такая система должна предоставлять структурированный доступ к информации о товарах, поставщиках, заказах, продажах и складских операциях, обеспечивая прозрачность процессов для администраторов, поставщиковов и клиентов.
 
 Внедрение автоматизированной базы данных позволит оптимизировать процессы инвентаризации, минимизировать человеческие ошибки и сократить время на рутинные операции. Основной задачей проекта является создание интуитивно понятного интерфейса для ввода данных, формирования отчетов, отслеживания динамики товарооборота и управления остатками. Система должна поддерживать сложные запросы, такие как поиск товаров по категориям, анализ сезонного спроса или прогнозирование потребности в пополнении запасов. Важным аспектом также остается обеспечение безопасности данных, включая разграничение прав доступа и защиту конфиденциальной коммерческой информации.
 
@@ -170,7 +170,7 @@
 Для достижения поставленной цели необходимо решить следующие задачи:  
 
 1. **Анализировать предметную область инвентаризации товаров на предприятии**  
-   Изучить текущие методы учёта товарных запасов, выявить потребности пользователей (менеджеров, кладовщиков, руководства) и определить ключевые данные для хранения: номенклатура товаров, поставки, продажи, остатки на складах, категории товаров. Важно выявить проблемы ручного учёта, такие как ошибки в остатках или сложности отслеживания сроков годности.  
+   Изучить текущие методы учёта товарных запасов, выявить потребности пользователей (администраторов, поставщиковов и клиентов) и определить ключевые данные для хранения: номенклатура товаров, поставки, продажи, остатки на складах, категории товаров. Важно выявить проблемы ручного учёта, такие как ошибки в остатках или сложности отслеживания сроков годности.  
 
 2. **Проектировать структуру базы данных**  
    Определить сущности (товары, поставщики, склады, заказы, перемещения) и их атрибуты (название, артикул, количество, дата поставки). Установить связи между таблицами, задать типы данных (например, DECIMAL для стоимости) и ограничения целостности (уникальность артикулов, проверка на отрицательные остатки).  
@@ -219,8 +219,8 @@
             - *Топ продаж* — анализ наиболее востребованных товаров за период.  
         - **Разграничение прав доступа:**  
             - *Администратор* — полный контроль над данными (добавление товаров, настройка прав).  
-            - *Менеджер* — внесение данных о продажах и поставках.  
-            - *Кладовщик* — просмотр остатков и регистрация перемещений.  
+            - *поставщик* — внесение данных о продажах и поставках.  
+            - *клиент* — просмотр доступных товаров, оформление заказа и просмотр истории своих заказов.   
 
 2. **Постановка задачи**  
     Разработать базу данных и приложение, которые:  
@@ -282,9 +282,9 @@
 - **Данные о пользователях:**  
   - Идентификатор пользователя (ID).  
   - Логин и хеш пароля (для авторизации).  
-  - Роль ("Администратор", "Поставщик", "Кладовщик", "Менеджер").  
+  - Роль ("Администратор", "Поставщик", "Клиент").  
   - Привязанный поставщик (для роли "Поставщик").  
-  - Привязанный склад (для роли "Кладовщик").  
+  - Привязанный склад (для роли "Поставщик").  
 
 - **Данные о клиентах (покупателях):**  
   - Идентификатор клиента (ID).  
@@ -332,8 +332,8 @@
 2. **Ограничение по доступу:**  
    - Конфиденциальные данные (цены, поставщики, финансовые показатели) должны быть защищены. Реализовать:  
      - Ролевую модель:  
-       - *Кладовщик* — только просмотр остатков и регистрация перемещений.  
-       - *Менеджер* — доступ к продажам и поставкам.  
+       - *Клиент* — просмотр доступных товаров, оформление заказа и просмотр истории своих заказов.  
+       - *Поставщик* — доступ к продажам и поставкам.  
        - *Администратор* — полные права, включая настройку системы.  
      - Шифрование敏感льных полей (например, цены).  
 
@@ -393,7 +393,7 @@
 - **События (Events):**  
   Операции, влияющие на остатки: поступление, продажа, списание, перемещение между складами.  
 - **Пользователи (Users):**  
-  Участники системы с ролями: администратор, поставщик, менеджер, кладовщик.  
+  Участники системы с ролями: администратор, поставщик, клиент.  
 - **Клиенты (Customers):**  
   Покупатели, совершающие заказы.  
 - **Корзина (Shopping Cart):**  
@@ -453,7 +453,806 @@
 ### 4. **Построение концептуальной модели**  
 Построение концептуальной модели. На основе выделенных сущностей, их атрибутов и связей между ними можно построить концептуальную ER-диаграмму для базы данных, предназначенной для контроля успеваемости школьников.
 
-(![inventorybd - public](https://github.com/user-attachments/assets/9e92a0ad-0c0d-4617-8ede-e8db549481f6)
+![inventorybd - public](https://github.com/user-attachments/assets/9e92a0ad-0c0d-4617-8ede-e8db549481f6)
 
 
 Эта концептуальная модель позволяет наглядно представить структуру базы данных, а также связи между различными сущностями, что упрощает дальнейшее проектирование и реализацию системы контроля успеваемости школьников.
+
+
+#### <a id="logical_structure">Логическая структура базы данных</a>  
+
+Логическая структура базы данных для инвентаризации товаров детализирует таблицы, их атрибуты, типы данных, ключи и ограничения целостности. Ниже представлены таблицы, их схемы и связи, реализованные в СУБД PostgreSQL.  
+
+---
+
+### **Определение таблиц и их атрибутов**  
+
+#### 1. **Таблица `products` (Товары)**  
+| Атрибут           | Тип данных       | Описание                          | Ограничения                     |  
+|--------------------|------------------|-----------------------------------|---------------------------------|  
+| `product_id`       | SERIAL          | Уникальный идентификатор товара  | PRIMARY KEY                     |  
+| `product_name`     | VARCHAR(255)    | Название товара                  | NOT NULL                        |  
+| `product_type`     | VARCHAR(255)    | Категория (электроника, одежда)  | NOT NULL                        |  
+| `color`            | VARCHAR(50)     | Цвет товара                      |                                 |  
+| `size`             | VARCHAR(50)     | Размер                           |                                 |  
+| `price`            | NUMERIC(10,2)   | Цена                             | CHECK (`price` > 0)            |  
+| `supplier_id`      | INTEGER         | Идентификатор поставщика         | FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` |  
+
+**Индексы:**  
+```sql  
+CREATE INDEX idx_product_name ON products (product_name);  
+```  
+
+---
+
+#### 2. **Таблица `suppliers` (Поставщики)**  
+| Атрибут           | Тип данных       | Описание                          | Ограничения                     |  
+|--------------------|------------------|-----------------------------------|---------------------------------|  
+| `supplier_id`      | SERIAL          | Уникальный идентификатор         | PRIMARY KEY                     |  
+| `phone`            | VARCHAR(20)     | Контактный телефон               | NOT NULL                        |  
+| `address`          | VARCHAR(255)    | Адрес поставщика                 |                                 |  
+| `company_name`     | VARCHAR(255)    | Название компании                | NOT NULL, UNIQUE               |  
+
+---
+
+#### 3. **Таблица `inventory` (Склады)**  
+| Атрибут           | Тип данных       | Описание                          | Ограничения                     |  
+|--------------------|------------------|-----------------------------------|---------------------------------|  
+| `inventory_id`     | SERIAL          | Уникальный идентификатор склада  | PRIMARY KEY                     |  
+| `product_id`       | INTEGER         | Идентификатор товара             | FOREIGN KEY (`product_id`) REFERENCES `products` |  
+| `quantity_in_stock`| INTEGER         | Текущий остаток                  | CHECK (`quantity_in_stock` >= 0)|  
+| `last_updated`     | TIMESTAMP       | Дата последнего обновления       | DEFAULT CURRENT_TIMESTAMP       |  
+
+**Триггер:**  
+```sql  
+CREATE TRIGGER update_inventory  
+AFTER INSERT ON events  
+FOR EACH ROW  
+EXECUTE FUNCTION update_inventory_trigger();  
+```  
+
+---
+
+#### 4. **Таблица `events` (События)**  
+| Атрибут           | Тип данных       | Описание                          | Ограничения                     |  
+|--------------------|------------------|-----------------------------------|---------------------------------|  
+| `event_id`         | SERIAL          | Уникальный идентификатор события | PRIMARY KEY                     |  
+| `event_type`       | VARCHAR(50)     | Тип (Поступление/Продажа/Списание)| NOT NULL                       |  
+| `product_id`       | INTEGER         | Идентификатор товара             | FOREIGN KEY (`product_id`) REFERENCES `products` |  
+| `quantity`         | INTEGER         | Количество товаров               | CHECK (`quantity` > 0)         |  
+| `event_date`       | TIMESTAMP       | Дата события                     | DEFAULT CURRENT_TIMESTAMP       |  
+| `supplier_id`      | INTEGER         | Идентификатор поставщика         | FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` |  
+
+**Индексы:**  
+```sql  
+CREATE INDEX idx_event_date ON events (event_date);  
+```  
+
+---
+
+#### 5. **Таблица `users` (Пользователи)**  
+| Атрибут           | Тип данных       | Описание                          | Ограничения                     |  
+|--------------------|------------------|-----------------------------------|---------------------------------|  
+| `user_id`          | SERIAL          | Уникальный идентификатор         | PRIMARY KEY                     |  
+| `username`         | VARCHAR(255)    | Логин                            | NOT NULL, UNIQUE               |  
+| `password_hash`    | VARCHAR(255)    | Хеш пароля                       | NOT NULL                        |  
+| `role`             | user_role       | Роль (Администратор/Поставщик/Клиент)| NOT NULL                      |  
+| `supplier_id`      | INTEGER         | Привязка к поставщику (для роли "Поставщик") | FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` |  
+
+**Тип `user_role`:**  
+```sql  
+CREATE TYPE user_role AS ENUM ('Администратор', 'Поставщик', 'Клиент');  
+```  
+
+---
+
+#### 6. **Таблица `sales` (Продажи)**  
+| Атрибут           | Тип данных       | Описание                          | Ограничения                     |  
+|--------------------|------------------|-----------------------------------|---------------------------------|  
+| `sale_id`          | SERIAL          | Уникальный идентификатор продажи | PRIMARY KEY                     |  
+| `customer_id`      | INTEGER         | Идентификатор клиента            | FOREIGN KEY (`customer_id`) REFERENCES `customers` |  
+| `product_id`       | INTEGER         | Идентификатор товара             | FOREIGN KEY (`product_id`) REFERENCES `products` |  
+| `quantity`         | INTEGER         | Количество проданных единиц      | CHECK (`quantity` > 0)         |  
+| `total_price`      | NUMERIC(10,2)   | Сумма продажи                     | CHECK (`total_price` > 0)      |  
+| `sale_date`        | TIMESTAMP       | Дата продажи                     | DEFAULT CURRENT_TIMESTAMP       |  
+
+---
+
+#### 7. **Таблица `customers` (Клиенты)**  
+| Атрибут           | Тип данных       | Описание                          | Ограничения                     |  
+|--------------------|------------------|-----------------------------------|---------------------------------|  
+| `customer_id`      | SERIAL          | Уникальный идентификатор клиента | PRIMARY KEY                     |  
+| `email`            | VARCHAR(255)    | Email                            | UNIQUE                          |  
+| `phone`            | VARCHAR(20)     | Телефон                          |                                 |  
+| `address`          | VARCHAR(255)    | Адрес доставки                   |                                 |  
+| `first_name`       | VARCHAR(255)    | Имя                              | NOT NULL                        |  
+| `last_name`        | VARCHAR(255)    | Фамилия                          | NOT NULL                        |  
+
+---
+
+#### 8. **Таблица `shopping_cart` (Корзина)**  
+| Атрибут           | Тип данных       | Описание                          | Ограничения                     |  
+|--------------------|------------------|-----------------------------------|---------------------------------|  
+| `cart_id`          | SERIAL          | Уникальный идентификатор корзины | PRIMARY KEY                     |  
+| `customer_id`      | INTEGER         | Идентификатор клиента            | FOREIGN KEY (`customer_id`) REFERENCES `customers` |  
+| `product_id`       | INTEGER         | Идентификатор товара             | FOREIGN KEY (`product_id`) REFERENCES `products` |  
+| `quantity`         | INTEGER         | Количество товаров в корзине     | CHECK (`quantity` > 0)         |  
+| `added_date`       | TIMESTAMP       | Дата добавления                  | DEFAULT CURRENT_TIMESTAMP       |  
+
+---
+
+### **Связи между таблицами**  
+1. **Товары ↔ Поставщики**  
+   - Один поставщик (`suppliers`) может поставлять множество товаров (`products`).  
+   - Связь: `1:N` через `supplier_id` в таблице `products`.  
+
+2. **Товары ↔ События**  
+   - Один товар участвует в множестве событий (поставки, продажи).  
+   - Связь: `1:N` через `product_id` в таблице `events`.  
+
+3. **Пользователи ↔ Поставщики**  
+   - Пользователь с ролью "Поставщик" привязан к одному поставщику.  
+   - Связь: `1:1` через `supplier_id` в таблице `users`.  
+
+4. **Продажи ↔ Клиенты**  
+   - Один клиент может совершать множество покупок.  
+   - Связь: `1:N` через `customer_id` в таблице `sales`.  
+
+---
+
+### **Пример SQL-запроса для создания таблицы `products`**  
+```sql  
+CREATE TABLE products (  
+    product_id SERIAL PRIMARY KEY,  
+    product_name VARCHAR(255) NOT NULL,  
+    product_type VARCHAR(255) NOT NULL,  
+    color VARCHAR(50),  
+    size VARCHAR(50),  
+    price NUMERIC(10,2) CHECK (price > 0),  
+    supplier_id INTEGER REFERENCES suppliers(supplier_id)  
+);  
+```  
+
+Эта структура обеспечивает целостность данных, производительность и соответствие требованиям автоматизации инвентаризации товаров.
+
+
+#### <a id="physical_structure">Физическая структура базы данных</a>  
+
+Физическая структура базы данных определяет способы хранения и управления данными в выбранной СУБД (PostgreSQL), обеспечивая производительность, целостность и безопасность. Для системы инвентаризации товаров ключевыми аспектами являются оптимизация запросов, управление большими объёмами данных и минимизация времени отклика.  
+
+---
+
+### **1. Выбор типов данных**  
+- **`NUMERIC(10,2)` для цены (`price`):**  
+  Точно хранит денежные значения с двумя знаками после запятой, избегая ошибок округления.  
+- **`SERIAL` для первичных ключей:**  
+  Автоматическая генерация уникальных идентификаторов (например, `product_id`, `supplier_id`).  
+- **`VARCHAR` с ограничением длины:**  
+  Например, `VARCHAR(255)` для названий товаров и поставщиков, чтобы избежать избыточного выделения памяти.  
+- **`TIMESTAMP` для дат событий:**  
+  Точное хранение даты и времени операций (поступление, продажа).  
+- **`ENUM` для ролей пользователей:**  
+  Тип `user_role` (`Администратор`, `Поставщик`, `Клиент`) гарантирует валидность значений.  
+
+---
+
+### **2. Индексы для оптимизации запросов**  
+- **Составные индексы:**  
+  ```sql  
+  CREATE INDEX idx_product_supplier ON products (product_name, supplier_id);  
+  ```  
+  Ускоряет поиск товаров по названию и поставщику.  
+- **Индексы по датам:**  
+  ```sql  
+  CREATE INDEX idx_event_date ON events (event_date);  
+  ```  
+  Улучшает производительность отчётов за период.  
+- **Уникальные индексы:**  
+  ```sql  
+  CREATE UNIQUE INDEX idx_product_code ON products (product_code);  
+  ```  
+  Гарантирует уникальность артикулов товаров.  
+
+---
+
+### **3. Триггеры и хранимые процедуры**  
+- **Триггер для обновления остатков:**  
+  ```sql  
+  CREATE TRIGGER update_inventory  
+  AFTER INSERT ON events  
+  FOR EACH ROW  
+  EXECUTE FUNCTION update_inventory_trigger();  
+  ```  
+  **Функция триггера:**  
+  ```sql  
+  CREATE OR REPLACE FUNCTION update_inventory_trigger() RETURNS TRIGGER AS $$  
+  BEGIN  
+    IF NEW.event_type = 'Поступление' THEN  
+      UPDATE inventory  
+      SET quantity_in_stock = quantity_in_stock + NEW.quantity  
+      WHERE product_id = NEW.product_id;  
+    ELSIF NEW.event_type = 'Продажа' THEN  
+      UPDATE inventory  
+      SET quantity_in_stock = quantity_in_stock - NEW.quantity  
+      WHERE product_id = NEW.product_id;  
+    END IF;  
+    RETURN NEW;  
+  END;  
+  $$ LANGUAGE plpgsql;  
+  ```  
+
+- **Триггер для аудита изменений:**  
+  ```sql  
+  CREATE TRIGGER audit_changes  
+  AFTER UPDATE ON products  
+  FOR EACH ROW  
+  EXECUTE FUNCTION log_product_changes();  
+  ```  
+  Записывает изменения в таблицу `audit_log`.  
+
+---
+
+### **4. Стратегия резервного копирования**  
+- **Ежедневные бэкапы:**  
+  Использование `pg_dump` для создания дампов:  
+  ```bash  
+  pg_dump -U inventorybd -W -F t inventorybd > /backups/inventory_$(date +%Y-%m-%d).tar  
+  ```  
+- **Хранение:**  
+  Резервные копии сохраняются на удалённом сервере и в облаке (AWS S3).  
+- **Восстановление:**  
+  ```bash  
+  pg_restore -U inventorybd -d inventorybd /backups/inventory_2024-03-15.tar  
+  ```  
+
+---
+
+### **5. Настройки PostgreSQL для производительности**  
+- **Конфигурация `postgresql.conf`:**  
+  ```ini  
+  shared_buffers = 4GB          # 25% от RAM  
+  work_mem = 64MB              # Увеличено для сортировки и агрегации  
+  maintenance_work_mem = 2GB   # Для индексации и VACUUM  
+  max_connections = 200        # Поддержка многопользовательской работы  
+  ```  
+- **Партиционирование таблицы `events`:**  
+  Разделение по диапазону дат для ускорения запросов к историческим данным.  
+  ```sql  
+  CREATE TABLE events_2024 PARTITION OF events  
+  FOR VALUES FROM ('2024-01-01') TO ('2025-01-01');  
+  ```  
+
+---
+
+### **6. Шардирование (горизонтальное разделение)**  
+Для масштабирования при росте данных:  
+- **Шарды по складам:**  
+  Каждый шард хранит данные определённого склада (например, `inventory_warehouse1`, `inventory_warehouse2`).  
+- **Маршрутизация запросов:**  
+  Использование Postgres-XL или сторонних инструментов (Citus).  
+
+---
+
+### **7. Пример DDL-скрипта**  
+```sql  
+CREATE TYPE public.user_role AS ENUM (
+    'Администратор',
+    'Поставщик',
+    'Клиент'
+);
+ALTER TYPE public.user_role OWNER TO inventorybd;
+
+CREATE TABLE public.customers (
+    customer_id integer NOT NULL PRIMARY KEY,
+    email character varying(255),
+    phone character varying(20),
+    address character varying(255),
+    user_id integer,
+    first_name character varying(255) NOT NULL,
+    last_name character varying(255) NOT NULL
+);
+ALTER TABLE public.customers OWNER TO inventorybd;
+
+CREATE SEQUENCE public.customers_customer_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER SEQUENCE public.customers_customer_id_seq OWNER TO inventorybd;
+
+ALTER SEQUENCE public.customers_customer_id_seq OWNED BY public.customers.customer_id;
+
+CREATE TABLE public.events (
+    event_id integer NOT NULL PRIMARY KEY,
+    event_type character varying(50),
+    product_id integer,
+    quantity integer,
+    event_date timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    supplier_id integer
+);
+ALTER TABLE public.events OWNER TO inventorybd;
+
+CREATE SEQUENCE public.events_event_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER SEQUENCE public.events_event_id_seq OWNER TO inventorybd;
+ALTER SEQUENCE public.events_event_id_seq OWNED BY public.events.event_id;
+
+CREATE TABLE public.favorites (
+    favorite_id integer NOT NULL PRIMARY KEY,
+    customer_id integer,
+    product_id integer,
+    added_date timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+ALTER TABLE public.favorites OWNER TO inventorybd;
+
+CREATE SEQUENCE public.favorites_favorite_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER SEQUENCE public.favorites_favorite_id_seq OWNER TO inventorybd;
+ALTER SEQUENCE public.favorites_favorite_id_seq OWNED BY public.favorites.favorite_id;
+
+CREATE TABLE public.inventory (
+    inventory_id integer NOT NULL PRIMARY KEY,
+    product_id integer,
+    quantity_in_stock integer,
+    last_updated timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+ALTER TABLE public.inventory OWNER TO inventorybd;
+
+CREATE SEQUENCE public.inventory_inventory_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER SEQUENCE public.inventory_inventory_id_seq OWNER TO inventorybd;
+ALTER SEQUENCE public.inventory_inventory_id_seq OWNED BY public.inventory.inventory_id;
+
+CREATE TABLE public.products (
+    product_id integer NOT NULL PRIMARY KEY,
+    product_name character varying(255),
+    product_type character varying(255),
+    color character varying(50),
+    size character varying(50),
+    price numeric(10,2),
+    supplier_id integer
+);
+ALTER TABLE public.products OWNER TO inventorybd;
+
+CREATE SEQUENCE public.products_product_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER SEQUENCE public.products_product_id_seq OWNER TO inventorybd;
+ALTER SEQUENCE public.products_product_id_seq OWNED BY public.products.product_id;
+
+CREATE TABLE public.sales (
+    sale_id integer NOT NULL PRIMARY KEY,
+    customer_id integer,
+    product_id integer,
+    quantity integer,
+    total_price numeric(10,2),
+    sale_date timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+ALTER TABLE public.sales OWNER TO inventorybd;
+
+CREATE SEQUENCE public.sales_sale_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER SEQUENCE public.sales_sale_id_seq OWNER TO inventorybd;
+ALTER SEQUENCE public.sales_sale_id_seq OWNED BY public.sales.sale_id;
+
+CREATE TABLE public.shopping_cart (
+    cart_id integer NOT NULL PRIMARY KEY,
+    customer_id integer,
+    product_id integer,
+    quantity integer,
+    added_date timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+ALTER TABLE public.shopping_cart OWNER TO inventorybd;
+
+CREATE SEQUENCE public.shopping_cart_cart_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER SEQUENCE public.shopping_cart_cart_id_seq OWNER TO inventorybd;
+ALTER SEQUENCE public.shopping_cart_cart_id_seq OWNED BY public.shopping_cart.cart_id;
+
+CREATE TABLE public.suppliers (
+    supplier_id integer NOT NULL PRIMARY KEY,
+    phone character varying(20),
+    address character varying(255),
+    user_id integer,
+    first_name character varying(255) NOT NULL,
+    last_name character varying(255) NOT NULL
+);
+ALTER TABLE public.suppliers OWNER TO inventorybd;
+
+CREATE SEQUENCE public.suppliers_supplier_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER SEQUENCE public.suppliers_supplier_id_seq OWNER TO inventorybd;
+ALTER SEQUENCE public.suppliers_supplier_id_seq OWNED BY public.suppliers.supplier_id;
+
+CREATE TABLE public.users (
+    user_id integer NOT NULL PRIMARY KEY,
+    username character varying(255) NOT NULL,
+    password_hash character varying(255) NOT NULL,
+    role public.user_role NOT NULL,
+    supplier_id integer,
+    customer_id integer,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+ALTER TABLE public.users OWNER TO inventorybd;
+
+COMMENT ON TABLE public.users IS 'Таблица для учёта пользователей и их ролей';
+
+CREATE SEQUENCE public.users_user_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+ALTER SEQUENCE public.users_user_id_seq OWNER TO inventorybd;
+ALTER SEQUENCE public.users_user_id_seq OWNED BY public.users.user_id;
+```  
+
+---
+
+### **8. Интеграция с приложением**  
+- **Настройка подключения в Python:**  
+  ```python  
+  import psycopg2  
+  conn = psycopg2.connect(  
+      dbname="inventorybd",  
+      user="inventorybd",  
+      password="1234",  
+      host="localhost"  
+  )  
+  ```  
+- **Пример запроса для получения остатков:**  
+  ```python  
+  def get_stock(product_id):  
+      cursor = conn.cursor()  
+      cursor.execute("SELECT quantity_in_stock FROM inventory WHERE product_id = %s", (product_id,))  
+      return cursor.fetchone()[0]  
+  ```  
+
+---
+
+Эта структура обеспечивает высокую производительность, отказоустойчивость и масштабируемость системы, что критично для предприятий с большим товарооборотом.
+
+
+#### <a id="project_realization">Реализация проекта в среде конкретной СУБД</a>
+
+Этот раздел курсовой работы описывает практическую реализацию базы данных в PostgreSQL. Рассматриваются основные этапы — от создания таблиц и запросов до разработки интерфейса, индексов и резервного копирования.
+
+1. **Создание таблиц и индексов**
+
+
+```
+SQL-код публиковался выше
+```
+
+2. **Создание представлений и функций**
+
+- **Для удобства работы, реализовано представления для оценок и для классов, которые ведет учитель:**
+- 
+```
+CREATE OR REPLACE VIEW student_grades AS
+SELECT
+    g.grade_id,
+    s.student_id,
+    s.first_name AS student_first_name,
+    s.last_name AS student_last_name,
+    sub.subject_name,
+    g.grade,
+    g.create_date,
+    c.class_number,
+    c.class_letter,
+    g.class_id,
+    g.subject_id,
+    g.date_lesson
+FROM
+    Grades g
+JOIN
+    Students s ON g.student_id = s.student_id
+JOIN
+    Subjects sub ON g.subject_id = sub.subject_id
+JOIN
+    Classes c ON g.class_id = c.class_id;
+```
+
+```
+CREATE OR REPLACE VIEW Teacher_Classes_View AS
+SELECT 
+    tc.teacher_id,
+    c.class_id,
+    c.class_number,
+    c.class_letter
+FROM 
+    Teacher_Classes tc
+JOIN 
+    Classes c ON tc.class_id = c.class_id;
+
+```
+
+
+- **Функция для добавление оценки:**
+
+```
+CREATE OR REPLACE FUNCTION add_grade(
+    p_student_id INT,
+    p_class_id INT,
+    p_subject_id INT,
+    p_teacher_id INT,
+    p_grade INT,
+    p_number_lesson INT,
+    p_date_lesson DATE,
+    p_create_date DATE
+) RETURNS VOID AS $$
+BEGIN
+    INSERT INTO Grades (student_id, class_id, subject_id, teacher_id, grade, number_lesson, date_lesson, create_date)
+    VALUES (p_student_id, p_class_id, p_subject_id, p_teacher_id, p_grade, p_number_lesson, p_date_lesson, p_create_date);
+END;
+$$ LANGUAGE plpgsql;
+```
+
+- **Функция для изменения оценки:**
+
+```
+CREATE OR REPLACE FUNCTION update_grade(
+    p_grade_id INT,
+    p_new_grade INT
+) RETURNS VOID AS $$
+BEGIN
+    UPDATE Grades
+    SET grade = p_new_grade, update_date = CURRENT_DATE
+    WHERE grade_id = p_grade_id;
+END;
+$$ LANGUAGE plpgsql;
+
+```
+
+**3. Разработка интерфейса**
+
+Интерфейс для взаимодействия с базой данных реализован на основе библиотеки **PySide6 (Qt для Python)**. Приложение обеспечивает ролевой доступ и интерактивное управление данными в соответствии со структурой БД `inventorybd.sql`. Основные функциональные компоненты включают:
+
+### **Авторизация**
+- Реализована система аутентификации через таблицу `users` с хэшированием паролей (алгоритм SHA-256). 
+- Ролевая модель:
+  - **Администратор** — полный доступ ко всем таблицам (CRUD-операции).
+  - **Поставщик** — управление товарами (`products`), инвентарём (`inventory`) и событиями (`events`), связанными с их `supplier_id`.
+  - **Клиент** — работа с корзиной (`shopping_cart`), избранным (`favorites`) и историей покупок (`sales`).
+
+### **Функционал интерфейса**
+1. **Администраторская панель**:
+   - Просмотр и редактирование любых таблиц через динамически формируемые QTableWidget.
+   - Диалоги добавления/изменения записей с валидацией:
+     - Выпадающие списки для полей `user_role`, `event_type`, `product_type`, `size`.
+     - Автоматическая подстановка `supplier_id` и `customer_id` при создании пользователей.
+   - Управление целостностью данных (каскадное удаление, проверка внешних ключей).
+
+2. **Интерфейс поставщика**:
+   - Фильтрация товаров и инвентаря по `supplier_id`.
+   - Регистрация событий:
+     - Типы: "Поступление", "Списание", "Продажа".
+     - Автоматическое обновление `quantity_in_stock` в `inventory` при изменении событий.
+
+3. **Клиентский интерфейс**:
+   - Просмотр каталога товаров с фильтрацией по типу и цвету.
+   - Управление корзиной: добавление/удаление товаров, изменение количества.
+   - История покупок с отображением `total_price` и даты (`sale_date`).
+
+### **Технические особенности**
+- **Динамические SQL-запросы**: Формируются с учётом выбранной роли и текущей таблицы.
+- **Стилизация**: Применён QSS-файл (`stype.qss`) для единообразия интерфейса (цвета, шрифты, отступы).
+- **Безопасность**: 
+  - Использование параметризованных запросов для предотвращения SQL-инъекций.
+  - Ограничение прав доступа на уровне интерфейса (например, клиент не может редактировать `suppliers`).
+
+### **Визуализация данных**
+- Таблицы с поддержкой сортировки и горизонтальной прокрутки.
+- Контекстные формы ввода:
+  - Для товаров: выбор типа (`Футболки`, `Рюкзаки`), размера (`XS`-`XXL`), цвета.
+  - Для событий: привязка к `product_id` и `supplier_id` через внешние ключи.
+
+Интерфейс полностью соответствует структуре БД, описанной в `inventorybd.sql`, и обеспечивает выполнение бизнес-процессов: управление поставками, отслеживание остатков, оформление заказов. Реализация модульной архитектуры позволяет масштабировать функционал (например, добавить модуль аналитики для администратора).
+
+**4. Назначение прав доступа**  
+
+Для обеспечения безопасности и соответствия бизнес-логике система реализует ролевую модель доступа на основе таблицы `users` (поле `role` типа `user_role`). Права распределены следующим образом:
+
+---
+
+### **Администратор**  
+- **Полный доступ** ко всем таблицам БД: `users`, `products`, `suppliers`, `customers`, `sales`, `events`, `inventory`, `favorites`, `shopping_cart`.  
+- **CRUD-операции**:  
+  - Добавление/удаление пользователей (включая назначение ролей).  
+  - Редактирование данных поставщиков и клиентов.  
+  - Управление товарами, инвентарём и событиями всех поставщиков.  
+- **Безопасность**:  
+  - Проверка внешних ключей (например, запрет удаления поставщика, если с ним связаны товары).  
+  - Контроль целостности данных через ограничения БД (каскадное удаление для связанных записей).  
+
+---
+
+### **Поставщик**  
+- **Доступ только к связанным данным**:  
+  - Товары (`products`) — фильтрация по `supplier_id`.  
+  - Инвентарь (`inventory`) — через связь с `products.supplier_id`.  
+  - События (`events`) — регистрация операций (поступление, списание) для своих товаров.  
+- **Разрешённые операции**:  
+  - Добавление/обновление товаров (с автоматической привязкой к своему `supplier_id`).  
+  - Регистрация событий, влияющих на остатки (`quantity_in_stock`).  
+  - Просмотр истории поставок и списаний.  
+- **Ограничения**:  
+  - Запрет на редактирование данных других поставщиков.  
+  - Невозможность удаления товаров с активными остатками или связанными событиями.  
+
+---
+
+### **Клиент**  
+- **Доступ к персональным данным**:  
+  - Корзина (`shopping_cart`) — только свои записи (`customer_id`).  
+  - Избранное (`favorites`) — управление собственным списком.  
+  - История покупок (`sales`) — просмотр заказов.  
+- **Разрешённые операции**:  
+  - Добавление товаров в корзину/избранное.  
+  - Оформление заказов (с расчётом `total_price`).  
+  - Просмотр каталога товаров (без доступа к инвентарю поставщиков).  
+- **Ограничения**:  
+  - Запрет на изменение чужих записей.  
+  - Невозможность просмотра данных других клиентов или поставщиков.  
+
+---
+
+
+
+
+
+5. **Разработка стратегии резервного копирования базы данных**
+
+Для защиты данных от сбоев и потерь необходимо разработать стратегию регулярного резервного копирования. Для PostgreSQL основными методами являются:
+
+- **Ежедневное логическое резервное копирование с помощью pg_dump** — позволяет создавать бэкап базы данных в формате SQL. Эти резервные копии можно хранить на удаленном сервере или в облаке.
+
+Пример ежедневного резервного копирования:
+
+```
+pg_dump -U inventorybd  -F c -b -v -f "/backups/backup_$(date +\%Y\%m\%d).backup" inventorybd 
+```
+
+- **Полное физическое резервное копирование раз в неделю с использованием pg_basebackup** — особенно полезно для больших объемов данных, так как обеспечивает быстрое восстановление базы данных.
+
+Пример команды:
+
+```
+pg_basebackup -U inventorybd  -D /path/to/backup -Ft -z -P
+```
+
+- **Проверка и тестирование восстановлений** — резервное копирование должно регулярно тестироваться на восстановление, чтобы убедиться в работоспособности резервных копий. Это критически важно для обеспечения постоянной доступности и надежности данных.
+
+Стратегия резервного копирования должна включать хранение нескольких копий данных на случай различных инцидентов, таких как сбой оборудования или ошибка администратора.
+
+### <a id="conclusion">Заключение</a>  
+
+В ходе выполнения курсовой работы была разработана система управления инвентарём и продажами на основе базы данных **PostgreSQL** и графического интерфейса **PySide6**, соответствующая требованиям современных торговых процессов. Ключевые результаты и выводы:  
+
+---
+
+#### **1. Анализ предметной области**  
+Проведён анализ бизнес-процессов, связанных с управлением товарами, поставками, клиентскими заказами и инвентарём. Выявлены ключевые сущности:  
+- **Поставщики** (таблица `suppliers`) — управление контрагентами.  
+- **Товары** (`products`) — каталог с атрибутами (цвет, размер, цена).  
+- **Инвентарь** (`inventory`) — отслеживание остатков.  
+- **События** (`events`) — логирование операций (поступление, списание, продажа).  
+- **Клиенты** (`customers`) и их активность (корзина, избранное, история покупок).  
+
+---
+
+#### **2. Проектирование и реализация БД**  
+- **Логическая структура**:  
+  - Нормализация таблиц до 3НФ (например, отделение `users` от `suppliers` и `customers`).  
+  - Связи через внешние ключи (например, `products.supplier_id → suppliers.supplier_id`).  
+- **Физическая реализация**:  
+  - Использование типов данных PostgreSQL (например, `NUMERIC(10,2)` для цен).  
+  - Автоматические последовательности (`SEQUENCE`) для генерации ID.  
+  - Триггеры для обновления `last_updated` в `inventory`.  
+
+---
+
+#### **3. Реализация функционала**  
+- **Интерфейс на PySide6** обеспечивает:  
+  - **Администраторам**:  
+    - Полный контроль над всеми таблицами (CRUD-операции).  
+    - Управление ролями через таблицу `users` (тип `user_role`).  
+  - **Поставщикам**:  
+    - Регистрацию событий (`events`) с автоматическим пересчётом остатков (`quantity_in_stock`).  
+    - Фильтрацию товаров по `supplier_id`.  
+  - **Клиентам**:  
+    - Работу с корзиной (`shopping_cart`) и оформление заказов (`sales`).  
+    - Просмотр каталога товаров с фильтрацией по типу (`product_type`) и цвету.  
+
+---
+
+#### **4. Безопасность и доступ**  
+- **Ролевая модель**:  
+  - Администратор: полный доступ через `AdminWindow`.  
+  - Поставщик: ограниченный доступ к своим товарам и событиям (`SupplierWindow`).  
+  - Клиент: только личные данные (`CustomerWindow`).  
+- **Защита данных**:  
+  - Хэширование паролей (`sha256`).  
+  - Параметризованные SQL-запросы для предотвращения инъекций.  
+  - Ограничения на уровне БД (например, `CHECK (quantity_in_stock >= 0)`).  
+
+---
+
+#### **5. Тестирование и документация**  
+- **Проверка корректности**:  
+  - Обновление инвентаря при добавлении событий (например, списание уменьшает `quantity_in_stock`).  
+  - Каскадное удаление записей (например, удаление пользователя → удаление связанного клиента).  
+- **Документация**:  
+  - SQL-дамп (`inventorybd.sql`) с полной схемой и тестовыми данными.  
+  - Руководство пользователя в коде (логика интерфейса в `main.py`).  
+
+---
+
+**Итог**: Разработанная система автоматизирует ключевые процессы управления инвентарём и продажами, обеспечивая гибкость для разных ролей пользователей. Готовое решение может быть внедрено в малом и среднем бизнесе для оптимизации логистики и повышения эффективности работы с клиентами.
+
+## <a id="literature">Список использованных информационных источников</a>
+
+1. **Официальная документация:**  
+   - **PostgreSQL**:  
+     [Документация PostgreSQL](https://www.postgresql.org/docs/) — использовалась для проектирования структуры БД, работы с типами данных (`user_role`, `NUMERIC`), ограничениями целостности и триггерами.  
+   - **PySide6 (Qt для Python)**:  
+     [Руководство по PySide6](https://doc.qt.io/qtforpython-6/) — реализация GUI, работа с виджетами (`QTableWidget`, `QComboBox`), стилизация через QSS.  
+   - **Psycopg2**:  
+     [Документация Psycopg2](https://www.psycopg.org/docs/) — подключение к PostgreSQL, выполнение параметризованных запросов для предотвращения SQL-инъекций.  
+   - **Python hashlib**:  
+     [Документация hashlib](https://docs.python.org/3/library/hashlib.html) — реализация хэширования паролей (SHA-256) для таблицы `users`.  
+
+2. **Архитектура БД и безопасность:**  
+   - **Ролевая модель доступа**:  
+     Реализация на основе типа `user_role` (ENUM: Администратор, Поставщик, Клиент) с ограничением прав через интерфейс (`AdminWindow`, `SupplierWindow`, `CustomerWindow`).  
+   - **Нормализация данных**:  
+     Таблицы `products`, `suppliers`, `inventory` спроектированы в соответствии с 3НФ (исключены транзитивные зависимости, разделены сущности).  
+
+3. **Практические руководства:**  
+   - **Работа с PostgreSQL в Python**:  
+     [Примеры использования Psycopg2](https://www.psycopg.org/docs/usage.html) — интеграция БД с GUI, обработка транзакций.  
+   - **Qt Style Sheets (QSS)**:  
+     [Справочник по стилизации Qt](https://doc.qt.io/qt-6/stylesheet-syntax.html) — оформление интерфейса (файл `stype.qss`).  
+
+4. **Тестирование и отладка:**  
+   - **DBeaver**:  
+     [Официальный сайт](https://dbeaver.io/) — визуализация структуры БД, проверка связей и данных.  
+   - **Логирование событий**:  
+     Таблица `events` с полями `event_type` (поступление, списание, продажа) для отслеживания изменений в инвентаре.  

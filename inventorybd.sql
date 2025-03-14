@@ -697,6 +697,7 @@ COPY public.events (event_id, event_type, product_id, quantity, event_date, supp
 198	Продажа	85	15	2025-03-09 17:19:15.446059	14
 199	Продажа	73	1	2025-03-09 17:19:15.446059	20
 200	Продажа	69	19	2025-03-09 17:19:15.446059	12
+201	Поступление	6	20	2025-03-13 00:00:00	1
 \.
 
 
@@ -872,7 +873,8 @@ COPY public.inventory (inventory_id, product_id, quantity_in_stock, last_updated
 97	97	35	2025-03-09 17:19:15.438397
 98	98	35	2025-03-09 17:19:15.438397
 99	99	5	2025-03-09 17:19:15.438397
-100	100	19	2025-03-09 17:19:15.438397
+100	100	11	2025-03-09 17:19:15.438397
+101	101	42	2025-03-13 00:00:00
 \.
 
 
@@ -981,6 +983,7 @@ COPY public.products (product_id, product_name, product_type, color, size, price
 98	Мягкий Висеть	Футболки	Серый	M	2191.83	15
 99	Носок Сомнительный	Футболки	Темно-фиолетовый	XL	1214.54	12
 100	Забирать Неправда	Спортивная обувь	Фуксия	S	3265.02	12
+101	Футболка Желтая	Футболки	Желтый	L	3200.99	12
 \.
 
 
@@ -1313,11 +1316,8 @@ COPY public.suppliers (supplier_id, phone, address, user_id, first_name, last_na
 --
 
 COPY public.users (user_id, username, password_hash, role, supplier_id, customer_id, created_at) FROM stdin;
-1	anisimovtaras	(&6yeYPW%p	Администратор	\N	\N	2025-03-09 17:19:05.954366
-2	budimir77	xp2mXg^)_(	Администратор	\N	\N	2025-03-09 17:19:05.954366
 4	pahom21	Hc$2TkgArC	Поставщик	2	\N	2025-03-09 17:19:05.954366
 5	vladilenkulakov	#8xZqUdS+6	Поставщик	3	\N	2025-03-09 17:19:05.954366
-6	sofon28	+70O!)uuFe	Поставщик	4	\N	2025-03-09 17:19:05.954366
 7	cheslav_49	!#7c&IYoDN	Поставщик	5	\N	2025-03-09 17:19:05.954366
 8	eduard_1995	YXEn3Lx4_t	Поставщик	6	\N	2025-03-09 17:19:05.954366
 9	afanasevzosima	(17p_gu4SK	Поставщик	7	\N	2025-03-09 17:19:05.954366
@@ -1341,7 +1341,6 @@ COPY public.users (user_id, username, password_hash, role, supplier_id, customer
 27	nnikonov	+e4Z7kXjjT	Клиент	\N	15	2025-03-09 17:19:05.954366
 28	julija45	X@1EMkDj&t	Клиент	\N	16	2025-03-09 17:19:05.954366
 29	borisovpolikarp	ri7v$EBi7@	Клиент	\N	17	2025-03-09 17:19:05.954366
-30	oleg43	QVre8vfg#(	Клиент	\N	18	2025-03-09 17:19:05.954366
 31	mkonstantinov	@0wV)nvQL^	Клиент	\N	19	2025-03-09 17:19:05.954366
 32	velimirmamontov	^^6tYoRXDH	Клиент	\N	20	2025-03-09 17:19:05.954366
 33	vvolkova	C9_R3Ogk!^	Администратор	\N	\N	2025-03-09 17:19:15.4086
@@ -1357,7 +1356,6 @@ COPY public.users (user_id, username, password_hash, role, supplier_id, customer
 43	gromovaekaterina	(+1XG8hl3L	Поставщик	19	\N	2025-03-09 17:19:15.4086
 44	sokrat1981	#$Rk@eA+r9	Поставщик	20	\N	2025-03-09 17:19:15.4086
 45	oksana93	)9DU@WeJJK	Клиент	\N	21	2025-03-09 17:19:15.4086
-46	nina30	A)M%4R9cG1	Клиент	\N	22	2025-03-09 17:19:15.4086
 47	rodion_2008	w1&8A!s%LK	Клиент	\N	23	2025-03-09 17:19:15.4086
 48	evseevoleg	^JztE73dg4	Клиент	\N	24	2025-03-09 17:19:15.4086
 49	jakushevaksenija	(mX4Ndm5#&	Клиент	\N	25	2025-03-09 17:19:15.4086
@@ -1377,6 +1375,11 @@ COPY public.users (user_id, username, password_hash, role, supplier_id, customer
 63	veniamin_61	o2oYmU0T&t	Клиент	\N	39	2025-03-09 17:19:15.4086
 64	nesterovanonna	5AxmmZqE#9	Клиент	\N	40	2025-03-09 17:19:15.4086
 3	denis77	dbfdf56c32ac736c7194477b98d3e9a001996b1730798a1d53102e4d25cb1876	Поставщик	1	\N	2025-03-09 17:19:05.954366
+1	admin	8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918	Администратор	\N	\N	2025-03-09 17:19:05.954366
+2	budimir77	93ead085224222d766c928cd89ba6886f3923699dee5d65575b5bbf203eecb5d	Администратор	\N	\N	2025-03-09 17:19:05.954366
+46	nina30	182ae10fb1c2e0e258a866888bad6763ef49d91c1f33fe0cdcc8623dab506a5a	Клиент	\N	22	2025-03-09 17:19:15.4086
+30	oleg43	3ad7b5d731a83c9f32630cf81e25ec24b8bd8c95faa2fcfeafa2e6a2a0ff245f	Клиент	\N	18	2025-03-09 17:19:05.954366
+6	sofon28	6032d2f9f460b34d4167f8cf56ad476168178ae4ae238ea0b795116e9ad02413	Поставщик	4	\N	2025-03-09 17:19:05.954366
 \.
 
 
